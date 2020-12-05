@@ -1,0 +1,23 @@
+{
+  "name": "aoc2020",
+  "version": "0.0.1",
+  "description": "Advent of Code 2020",
+  "private": true,
+  "main": "./out/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Seairth Jacobs",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^14",
+    "typescript": "^4.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "rxjs": "^6.5.3"
+  }
+}
