@@ -1,7 +1,5 @@
-import { registerSolutionFunc } from "./solutionManager";
-
-async function solution1(input: string): Promise<number> {
-  const lines = input.split('\n');
+export async function solution1(input: string): Promise<number> {
+  const lines = input.split('\n').slice(0, -1);
 
   for (let offset = 0; offset < lines.length; offset++) {
     for (let offset2 = offset + 1; offset2 < lines.length; offset2++) {
@@ -17,8 +15,8 @@ async function solution1(input: string): Promise<number> {
   return -1;
 };
 
-async function solution2(input: string): Promise<number> {
-  const lines = input.split('\n');
+export async function solution2(input: string): Promise<number> {
+  const lines = input.split('\n').slice(0, -1);
 
   for (let offset = 0; offset < lines.length; offset++) {
     for (let offset2 = offset + 1; offset2 < lines.length; offset2++) {
@@ -36,6 +34,3 @@ async function solution2(input: string): Promise<number> {
 
   return -1;
 }
-
-registerSolutionFunc(1, 1, solution1);
-registerSolutionFunc(1, 2, solution2);

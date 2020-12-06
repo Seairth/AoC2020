@@ -1,12 +1,8 @@
-import { dir } from "console";
-import { countBy } from "lodash";
-import { registerSolutionFunc } from "./solutionManager";
-
-async function solution1(input: string): Promise<number> {
+export async function solution1(input: string): Promise<number> {
   return calcTrees(input, 3, 1);
 };
 
-async function solution2(input: string): Promise<number> {
+export async function solution2(input: string): Promise<number> {
   const permutations = [
     [1, 1],
     [3, 1],
@@ -25,7 +21,7 @@ async function solution2(input: string): Promise<number> {
 }
 
 function calcTrees(input: string, deltaX: number, deltaY: number): number {
-  const lines = input.split('\n');
+  const lines = input.split('\n').slice(0, -1);
   let x = 0;
   let y = 0;
 
@@ -42,6 +38,3 @@ function calcTrees(input: string, deltaX: number, deltaY: number): number {
 
   return trees;
 }
-
-registerSolutionFunc(3, 1, solution1);
-registerSolutionFunc(3, 2, solution2);

@@ -1,11 +1,21 @@
-import fs = require('fs');
-import readline = require('readline');
-import util = require('util');
-import { isUndefined } from "lodash";
-import { getSolutionFunc } from './solutionManager';
+import fetch from 'node-fetch';
+import fs from 'fs/promises';
+import readline from 'readline';
+import { isUndefined } from 'lodash';
 
-for (let day = 1; day <= 4; day++) {
-  require(`./day${day}`);
+import { getSolutionFunc, registerSolutionFunc } from './solutionManager';
+
+const YEAR = 2020;
+
+for (let day = 1; day <= 25; day++) {
+  try {
+    const solutions = require(`./day${day}`);
+    registerSolutionFunc(day, 1, solutions.solution1);
+    registerSolutionFunc(day, 2, solutions.solution2);
+  }
+  catch {
+    break;
+  }
 }
 
 function validateDay(value: number): number {
@@ -17,7 +27,30 @@ function validateDay(value: number): number {
 }
 
 async function getData(day: number): Promise<string> {
-  return util.promisify(fs.readFile)(`input/day${day}.txt`).then(buffer => buffer.toString());
+  try {
+    await fs.access(`./input/day${day}.txt`);
+  }
+  catch {
+    const cookies = JSON.parse((await fs.readFile('./input/cookies.json')).toString());
+    let cookieData = "";
+
+    for(const name in cookies) {
+      cookieData += `${name}=${cookies[name]};`;
+    }
+
+    const response = await fetch(`https://www.adventofcode.com/${YEAR}/day/${day}/input`, {
+      headers: {
+        cookie: cookieData
+      }
+    });
+
+    const data = await response.text();
+    await fs.writeFile(`./input/day${day}.txt`, data);
+
+    return data;
+  }
+
+  return fs.readFile(`input/day${day}.txt`).then(buffer => buffer.toString());
 }
 
 async function main() {
@@ -31,11 +64,11 @@ async function main() {
 
     const day = await inputFunc("Which day? ").then(validateDay);
     
-    const data = await getData(day);
-
     const solutionFunc1 = getSolutionFunc(day, 1);
-
+    
     if (! isUndefined(solutionFunc1)) {
+      const data = await getData(day);
+
       const answer1 = await solutionFunc1(data);
       console.log(`Day ${day} answer A: ${answer1}`);
 

@@ -1,5 +1,4 @@
-import { includes, isEmpty, pull } from "lodash";
-import { registerSolutionFunc } from "./solutionManager";
+import { isEmpty, pull } from "lodash";
 
 function between(v: number, min: number, max: number): boolean {
   return (v >= min) && (v <= max);
@@ -59,7 +58,7 @@ const fieldRules: { [key in fieldNames]: (v: string) => boolean} = {
   // 'cid'
 };
 
-async function solution1(input: string): Promise<number> {
+export async function solution1(input: string): Promise<number> {
   const lines = input.split('\n');
 
   let validCount = 0;
@@ -79,14 +78,10 @@ async function solution1(input: string): Promise<number> {
     }
   }
 
-  if (fields.length === 0) {
-    validCount++;
-  }
-
   return validCount;
 };
 
-async function solution2(input: string): Promise<number> {
+export async function solution2(input: string): Promise<number> {
   const lines = input.split('\n');
 
   let validCount = 0;
@@ -111,14 +106,5 @@ async function solution2(input: string): Promise<number> {
     }
   }
 
-  if (fields.length === 0) {
-    validCount++;
-  }
-
   return validCount;
 }
-
-
-
-registerSolutionFunc(4, 1, solution1);
-registerSolutionFunc(4, 2, solution2);
