@@ -1,5 +1,4 @@
 import { intersection, isEmpty, sum, uniq } from "lodash";
-import { registerSolutionFunc } from "./solutionManager";
 
 export async function solution1(input: string): Promise<number> {
   return solve(input)[0];
