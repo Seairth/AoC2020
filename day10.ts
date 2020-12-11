@@ -1,5 +1,4 @@
 import { find, isEmpty } from "lodash";
-import { totalmem } from "os";
 
 export async function solution1(input: string): Promise<number> {
   const values = input.split('\n').filter(v => !isEmpty(v)).map(v => parseInt(v, 10)).sort((a, b) => a-b);
