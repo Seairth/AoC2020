@@ -1,5 +1,4 @@
 import { cloneDeep, isEmpty } from "lodash";
-import { getPriority } from "os";
 
 export async function solution1(input: string): Promise<number> {
   let grid: string[][] = input.split('\n').filter(v => !isEmpty(v)).map(v => {
