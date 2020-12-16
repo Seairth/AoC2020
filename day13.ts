@@ -1,5 +1,3 @@
-import { isEmpty } from "lodash";
-
 export async function solution1(input: string): Promise<number> {
   const lines = input.split('\n');
   const arrival = parseInt(lines[0], 10);

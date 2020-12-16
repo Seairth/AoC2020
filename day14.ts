@@ -1,5 +1,3 @@
-import { isEmpty, reduce } from "lodash";
-
 export async function solution1(input: string): Promise<number> {
   const lines = input.split('\n');
   const mem = new Map<number, number>();
