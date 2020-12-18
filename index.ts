@@ -9,7 +9,7 @@ const YEAR = 2020;
 
 for (let day = 1; day <= 25; day++) {
   try {
-    const solutions = require(`./day${day}`);
+    const solutions = require(`./solutions/day${day}`);
     registerSolutionFunc(day, 1, solutions.solution1);
     registerSolutionFunc(day, 2, solutions.solution2);
   }
