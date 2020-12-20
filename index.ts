@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import fs from 'fs/promises';
 import readline from 'readline';
-import { isUndefined } from 'lodash';
+import { isEmpty, isUndefined } from 'lodash';
 
 import { getSolutionFunc, registerSolutionFunc } from './solutionManager';
 
@@ -14,13 +14,36 @@ for (let day = 1; day <= 25; day++) {
     registerSolutionFunc(day, 2, solutions.solution2);
   }
   catch {
-    break;
+    // day not found. continue...
   }
+}
+
+function getDay(): Promise<number> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+
+  const today = new Date();
+
+  return new Promise<number>(resolve => rl.question(`Which Day? [${today.getDate()}]` , answer => {
+    let v: number;
+
+    if (isEmpty(answer)) {
+      v = today.getDate();
+    } else {
+      v = Number.parseInt(answer, 10);
+    }
+
+    rl.close();    
+
+    resolve(v);
+  }));
 }
 
 function validateDay(value: number): number {
   if (Number.isNaN(value) || value < 1 || value > 25) {
-    throw("not a day between 1 and 25");
+    throw("Day is not between 1 and 25.");
   }
   
   return value;
@@ -54,37 +77,24 @@ async function getData(day: number): Promise<string> {
 }
 
 async function main() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  })
-
   try {
-    const inputFunc = (prompt: string) => new Promise<number>(resolve => rl.question(prompt , answer => resolve(Number.parseInt(answer, 10))));
-
-    const day = await inputFunc("Which day? ").then(validateDay);
+    const day = validateDay(await getDay())
     
-    const solutionFunc1 = getSolutionFunc(day, 1);
-    
-    if (! isUndefined(solutionFunc1)) {
-      const data = await getData(day);
+    const data = await getData(day);
 
-      const answer1 = await solutionFunc1(data);
-      console.log(`Day ${day} answer A: ${answer1}`);
-
-      const solutionFunc2 = getSolutionFunc(day, 2);
-
-      if(! isUndefined(solutionFunc2)) {
-        const answer2 = await solutionFunc2(data);
-        console.log(`Day ${day} answer B: ${answer2}`);
+    for (let part of [1, 2]) {
+      const solution = getSolutionFunc(day, part);
+      
+      if (isUndefined(solution)) {
+        console.log(`Day ${day} solution ${part} not found.`);
+      } else {
+        const answer = await solution(data);
+        console.log(`Day ${day} answer ${part}: ${answer}`);
       }
     }
   }
   catch(error) {
     console.log(error);
-  }
-  finally {
-    rl.close();    
   }
 }
 
